@@ -458,7 +458,7 @@ public class FYVideoCompressor {
     }
     
     private func createVideoSettingsWithBitrate(_ bitrate: Float, maxKeyFrameInterval: Int, size: CGSize) -> [String: Any] {
-        return [AVVideoCodecKey: AVVideoCodecType.h264,
+        return [AVVideoCodecKey: AVVideoCodecType.hevc,
                 AVVideoWidthKey: size.width,
                AVVideoHeightKey: size.height,
           AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
