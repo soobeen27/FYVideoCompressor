@@ -315,7 +315,8 @@ public class FYVideoCompressor {
                   videoSettings,
                   audioTrack,
                   audioSettings,
-                  targetFPS: config.fps,
+//                  targetFPS: config.fps,
+                  targetFPS: videoTrack.nominalFrameRate,
                   outputPath: _outputPath,
                   completion: completion)
     }
@@ -470,7 +471,6 @@ AVVideoExpectedSourceFrameRateKey: targetFPS,
 AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate,
 //                                    AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
 //                                 AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
-                             AVVideoMaxKeyFrameIntervalKey: 30,
                              AVVideoMaxKeyFrameIntervalKey: maxKeyFrameInterval
                                  ]
         ]
