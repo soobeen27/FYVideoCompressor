@@ -315,8 +315,7 @@ public class FYVideoCompressor {
                   videoSettings,
                   audioTrack,
                   audioSettings,
-//                  targetFPS: config.fps,
-                  targetFPS: videoTrack.nominalFrameRate,
+                  targetFPS: config.fps,
                   outputPath: _outputPath,
                   completion: completion)
     }
