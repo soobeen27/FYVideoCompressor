@@ -470,6 +470,7 @@ AVVideoExpectedSourceFrameRateKey: targetFPS,
 AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate,
 //                                    AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
 //                                 AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
+                           AVVideoAllowFrameReorderingKey : true,
                              AVVideoMaxKeyFrameIntervalKey: maxKeyFrameInterval
                                  ]
         ]
