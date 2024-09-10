@@ -461,7 +461,8 @@ public class FYVideoCompressor {
         return [AVVideoCodecKey: AVVideoCodecType.hevc,
                 AVVideoWidthKey: size.width,
                AVVideoHeightKey: size.height,
-          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
+//          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
+          AVVideoScalingModeKey: AVVideoScalingModeResizeAspect,
 AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate,
 //                                    AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
 //                                 AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
@@ -510,26 +511,47 @@ AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate,
         var counter = 0
         var index = 0
         
+//        videoInput.requestMediaDataWhenReady(on: videoCompressQueue) {
+//            while videoInput.isReadyForMoreMediaData {
+//                if let buffer = videoOutput.copyNextSampleBuffer() {
+//                    if frameIndexArr.isEmpty {
+//                        videoInput.append(buffer)
+//                    } else { // reduce FPS
+//                        // append first frame
+//                        if index < frameIndexArr.count {
+//                            let frameIndex = frameIndexArr[index]
+//                            if counter == frameIndex {
+//                                index += 1
+//                                videoInput.append(buffer)
+//                            }
+//                            counter += 1
+//                        } else {
+//                            // Drop this frame
+//                            CMSampleBufferInvalidate(buffer)
+//                        }
+//                    }
+//                    
+//                } else {
+//                    videoInput.markAsFinished()
+//                    completion()
+//                    break
+//                }
+//            }
+//        }
+        let dropFactor = Int(1.0 / 0.2) //example 20% frame rate drop
+        
         videoInput.requestMediaDataWhenReady(on: videoCompressQueue) {
             while videoInput.isReadyForMoreMediaData {
                 if let buffer = videoOutput.copyNextSampleBuffer() {
-                    if frameIndexArr.isEmpty {
+                    counter += 1
+                    if counter % dropFactor == 0 {
+                        // Drop this frame
+                        CMSampleBufferInvalidate(buffer)
+                        print("frame \(counter) dropped")
+                    } else {
                         videoInput.append(buffer)
-                    } else { // reduce FPS
-                        // append first frame
-                        if index < frameIndexArr.count {
-                            let frameIndex = frameIndexArr[index]
-                            if counter == frameIndex {
-                                index += 1
-                                videoInput.append(buffer)
-                            }
-                            counter += 1
-                        } else {
-                            // Drop this frame
-                            CMSampleBufferInvalidate(buffer)
-                        }
+                        print("frame \(counter) added")
                     }
-                    
                 } else {
                     videoInput.markAsFinished()
                     completion()
