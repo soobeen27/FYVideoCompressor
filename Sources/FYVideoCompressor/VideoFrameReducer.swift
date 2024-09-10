@@ -30,10 +30,14 @@ public struct ReduceFrameEvenlySpaced: VideoFrameReducer {
         
         var res = [Int]()
         
-        while res.count < Int(targetFPS * videoDuration) {
+        while res.count < Int(originalFPS * videoDuration) && counter * stride < originalFrames.count {
             let index = counter * stride
-            let frame = originalFrames[index]
-            res.append(frame)
+//            let frame = originalFrames[index]
+//            res.append(frame)
+            if index < originalFrames.count {
+                let frame = originalFrames[index]
+                res.append(frame)
+            }
             counter += 1
         }
         

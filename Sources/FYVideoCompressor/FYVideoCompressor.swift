@@ -183,7 +183,9 @@ public class FYVideoCompressor {
         
         let videoSettings = createVideoSettingsWithBitrate(targetVideoBitrate,
                                                            maxKeyFrameInterval: 10,
-                                                           size: scaleSize)
+                                                           size: scaleSize,
+                                                           targetFPS : quality.value.fps
+        )
 #if DEBUG
         print("************** Video info **************")
 #endif
@@ -256,7 +258,9 @@ public class FYVideoCompressor {
         let targetSize = calculateSizeWithScale(config.scale, originalSize: videoTrack.naturalSize)
         let videoSettings = createVideoSettingsWithBitrate(targetVideoBitrate,
                                                            maxKeyFrameInterval: config.videomaxKeyFrameInterval,
-                                                           size: targetSize)
+                                                           size: targetSize,
+                                                           targetFPS: config.fps
+        )
         
         var audioTrack: AVAssetTrack?
         var audioSettings: [String: Any]?
@@ -457,12 +461,12 @@ public class FYVideoCompressor {
         
     }
     
-    private func createVideoSettingsWithBitrate(_ bitrate: Float, maxKeyFrameInterval: Int, size: CGSize) -> [String: Any] {
+    private func createVideoSettingsWithBitrate(_ bitrate: Float, maxKeyFrameInterval: Int, size: CGSize, targetFPS: Float = 30) -> [String: Any] {
         return [AVVideoCodecKey: AVVideoCodecType.hevc,
                 AVVideoWidthKey: size.width,
                AVVideoHeightKey: size.height,
-//          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
-          AVVideoScalingModeKey: AVVideoScalingModeResizeAspect,
+          AVVideoScalingModeKey: AVVideoScalingModeResizeAspectFill,
+AVVideoExpectedSourceFrameRateKey: targetFPS,
 AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate,
 //                                    AVVideoProfileLevelKey: AVVideoProfileLevelH264HighAutoLevel,
 //                                 AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
